@@ -14,6 +14,8 @@ function initQuiz() {
       const submitButtonEl = document.getElementById("submit-initials");
       const highscoreButtonEl = document.getElementById("highscore-button");
       const highscoreContainerEl = document.getElementById("highscore-container");
+      const homebuttonEL = document.getElementById("home");
+      const clearbuttonEL = document.getElementById("clear");
       let highScores = [];
           //  Method to store and retrieve arrays in/from local storage obtained from https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
       if (JSON.parse(localStorage.getItem('scores')) !== null) {
@@ -155,6 +157,7 @@ function initQuiz() {
           }
           function saveHighScore() {
               let initialsEl = document.getElementById("initials-entry");
+              initialsEl.value= "";
               let newHighScore = {
                   initials: initialsEl.value,
                   highScore: score
@@ -163,6 +166,7 @@ function initQuiz() {
               highScores.push(newHighScore);
               console.log(highScores);
               localStorage.setItem("scores",JSON.stringify(highScores));
+              highscoreButtonEl.click();
           }
           submitButtonEl.addEventListener("click",saveHighScore);
           
@@ -170,6 +174,15 @@ function initQuiz() {
       }
 
       startButtonEl.addEventListener("click",startQuiz);
+      homebuttonEL.addEventListener("click", function(){
+          location.reload();
+      });
+      clearbuttonEL.addEventListener("click", function(){
+          localStorage.removeItem("scores");
+          highscores = [];
+        //   highscoreButtonEl.click();
+        location.reload();
+      })
 
       highscoreButtonEl.addEventListener("click",function() {
           landingContainerEl.setAttribute("class","container d-none");
@@ -177,6 +190,7 @@ function initQuiz() {
           finalContainerEl.setAttribute("class","container d-none");
           highscoreContainerEl.setAttribute("class","container");
           let colEl = document.getElementById("highscore-table");
+          colEl.innerHTML ="";
           for (i=0; i<highScores.length; i++) {
               let rowEl = document.createElement("div");
               rowEl.setAttribute("class","row mb-1");
